@@ -1,49 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>测试uniapp的webview和APP之间的通信</title>
-		<link rel="stylesheet" type="text/css" href="css/index.css" />
-	</head>
-	<body>
-		<div id="app">
-			<div class="title">这个是hybrid下的html页面哦！</div>
-			<div class="demo-div">
-				<div class="demo-lable" v-for="(item,index) in dataList" :key="index">
-					<img :src="item.smallimage">
-					<div class="name">{{item.name}}</div>
-				</div>
-			</div>
-		</div>
-	</body>
-	<!-- 引入uniapp的SDK (必须引用)-->
-	<script type="text/javascript" src="https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js">
-	</script>
-	<!-- 引入vue方法-->
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-	<script type="text/javascript" src="js/textData.js"></script>
-	<script type="text/javascript">
-		// 在引用依赖的文件后，需要在 HTML 中监听 UniAppJSBridgeReady 事件触发后，才能安全调用 uni 的 API。  
-		document.addEventListener('UniAppJSBridgeReady', function() {
-			uni.getEnv(function(res) {
-				console.log('获取当前环境：' + JSON.stringify(res));
-			});
-		});
-		
-		// HTML 接受APP发送过来的消息 (H5端)
-		window.addEventListener('message', e => {
-			console.log(e,'HTML 接受APP发送过来的消息 (H5端)');
-			app.dataList = JSON.parse(e.data.data).navigation
-			console.log(app.dataList,'+++++++++');
-		}, false)
 
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + Vue + TS</title>
+  <script type="module" crossorigin src="/assets/index-f1207277.js"></script>
+  <link rel="stylesheet" href="/assets/index-e2cf1e85.css">
+</head>
 
-		// HTML 接受APP发送过来的消息 (APP端)
-		function requestData(data) {
-			console.log(JSON.stringify(data),'HTML 接受APP发送过来的消息 (APP端)');
-			app.dataList = data.navigation // 赋值
-		}
-	</script>
+<body>
+  <div id="app"></div>
+  
+  <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@dcloudio/uni-webview-js@0.0.3/index.js"></script>
+</body>
+
 </html>
-
+<script>
+  document.addEventListener('UniAppJSBridgeReady', function () {
+    uni.postMessage({
+      data: {
+        options: '来自H5的问候'
+      }
+    });
+    uni.getEnv(function (res) {
+      console.log('当前环境：' + JSON.stringify(res));
+    });
+  });
+</script>
